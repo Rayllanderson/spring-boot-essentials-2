@@ -29,12 +29,17 @@ public class AnimeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
-        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody Anime anime) {
         return ResponseEntity.status(HttpStatus.CREATED).body(animeService.save(anime));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        animeService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

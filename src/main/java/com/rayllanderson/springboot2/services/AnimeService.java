@@ -23,9 +23,7 @@ public class AnimeService {
     }
 
     public Anime findById(long id) {
-        return animes.stream().filter(anime -> anime.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not Found"));
+        return animes.stream().filter(anime -> anime.getId().equals(id)).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not Found"));
     }
 
     public Anime save(Anime anime) {
@@ -34,4 +32,7 @@ public class AnimeService {
         return anime;
     }
 
+    public void deleteById(long id) {
+        animes.remove(findById(id));
+    }
 }
