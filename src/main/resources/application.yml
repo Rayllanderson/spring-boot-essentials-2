@@ -2,3 +2,16 @@
 server:
   error:
     include-stacktrace: on_param
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/anime
+    username: postgres
+    password: 12345
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    open-in-view: false
