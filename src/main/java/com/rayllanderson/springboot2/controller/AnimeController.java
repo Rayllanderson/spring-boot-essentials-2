@@ -42,4 +42,9 @@ public class AnimeController {
         animeService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Anime> update(@RequestBody Anime anime, @PathVariable long id) {
+        return ResponseEntity.ok(animeService.update(anime, id));
+    }
 }
