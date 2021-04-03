@@ -1,6 +1,7 @@
 package com.rayllanderson.springboot2.services;
 
 import com.rayllanderson.springboot2.domain.Anime;
+import com.rayllanderson.springboot2.mapper.AnimeMapper;
 import com.rayllanderson.springboot2.repositories.AnimeRepository;
 import com.rayllanderson.springboot2.requests.AnimePostRequestBody;
 import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
@@ -26,7 +27,7 @@ public class AnimeService {
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-        return animeRepository.save(Anime.builder().name(animePostRequestBody.getName()).build());
+        return animeRepository.save(AnimeMapper.toAnime(animePostRequestBody));
     }
 
     public void deleteById(long id) {
@@ -34,8 +35,9 @@ public class AnimeService {
     }
 
     public void update(AnimePutRequestBody animePutRequestBody, long id) {
-        Anime animeFromDatabase = findById(id);
-        Anime anime = Anime.builder().id(animeFromDatabase.getId()).name(animePutRequestBody.getName()).build();
+        findById(id);
+        Anime anime = AnimeMapper.toAnime(animePutRequestBody);
+        anime.setId(id);
         animeRepository.save(anime);
     }
 }
