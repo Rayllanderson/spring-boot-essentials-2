@@ -1,17 +1,17 @@
 package com.rayllanderson.springboot2.exceptions.handle;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Data
-@Builder
+@SuperBuilder
 public class StandardError {
 
-    private LocalDateTime timestamp;
-    private Integer status;
-    private String error;
-    private Object message;
-    private String path;
+    protected LocalDateTime timestamp;
+    protected Integer status;
+    protected String error;
+    protected Object message;
+    protected String path;
 }

@@ -3,11 +3,15 @@ package com.rayllanderson.springboot2.exceptions.handle;
 import com.rayllanderson.springboot2.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandle {
@@ -21,6 +25,22 @@ public class RestExceptionHandle {
         .message(e.getMessage())
         .path(request.getRequestURI())
         .status(statusCode.value()).build());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StandardError> handleValidationException(MethodArgumentNotValidException e, HttpServletRequest request){
+        HttpStatus statusCode = HttpStatus.NOT_FOUND;
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(", "));
+        String fieldsMessages = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
+        return ResponseEntity.status(statusCode).body(ValidationError.builder()
+                .timestamp(LocalDateTime.now())
+                .error("Not Found")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .status(statusCode.value())
+                .fields(fields)
+                .fieldsMessage(fieldsMessages).build());
     }
 
 }
