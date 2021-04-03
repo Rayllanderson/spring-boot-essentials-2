@@ -8,6 +8,7 @@ import com.rayllanderson.springboot2.requests.AnimePostRequestBody;
 import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -30,14 +31,17 @@ public class AnimeService {
         return animeRepository.findById(id).orElseThrow(() -> new NotFoundException("Anime not Found"));
     }
 
+    @Transactional
     public Anime save(AnimePostRequestBody animePostRequestBody) {
         return animeRepository.save(AnimeMapper.toAnime(animePostRequestBody));
     }
 
+    @Transactional
     public void deleteById(long id) {
         animeRepository.delete(findById(id));
     }
 
+    @Transactional
     public void update(AnimePutRequestBody animePutRequestBody, long id) {
         findById(id);
         Anime anime = AnimeMapper.toAnime(animePutRequestBody);
