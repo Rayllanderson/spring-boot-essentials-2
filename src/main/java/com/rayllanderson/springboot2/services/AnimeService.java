@@ -22,7 +22,11 @@ public class AnimeService {
         return animeRepository.findAll();
     }
 
-    public Anime findById(long id) throws ResponseStatusException{
+    public List<Anime> findByName(String name) {
+        return animeRepository.findByNameIgnoreCaseContaining(name);
+    }
+
+    public Anime findById(long id) throws ResponseStatusException {
         return animeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not Found"));
     }
 
