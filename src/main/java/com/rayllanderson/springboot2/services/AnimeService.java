@@ -1,12 +1,12 @@
 package com.rayllanderson.springboot2.services;
 
 import com.rayllanderson.springboot2.domain.Anime;
+import com.rayllanderson.springboot2.exceptions.NotFoundException;
 import com.rayllanderson.springboot2.mapper.AnimeMapper;
 import com.rayllanderson.springboot2.repositories.AnimeRepository;
 import com.rayllanderson.springboot2.requests.AnimePostRequestBody;
 import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,7 +27,7 @@ public class AnimeService {
     }
 
     public Anime findById(long id) throws ResponseStatusException {
-        return animeRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not Found"));
+        return animeRepository.findById(id).orElseThrow(() -> new NotFoundException("Anime not Found"));
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
