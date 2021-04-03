@@ -1,6 +1,8 @@
 package com.rayllanderson.springboot2.controller;
 
 import com.rayllanderson.springboot2.domain.Anime;
+import com.rayllanderson.springboot2.requests.AnimePostRequestBody;
+import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
 import com.rayllanderson.springboot2.services.AnimeService;
 import com.rayllanderson.springboot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime) {
         return ResponseEntity.status(HttpStatus.CREATED).body(animeService.save(anime));
     }
 
@@ -44,7 +46,8 @@ public class AnimeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Anime> update(@RequestBody Anime anime, @PathVariable long id) {
-        return ResponseEntity.ok(animeService.update(anime, id));
+    public ResponseEntity<Void> update(@RequestBody AnimePutRequestBody anime, @PathVariable long id) {
+        animeService.update(anime, id);
+        return ResponseEntity.noContent().build();
     }
 }
