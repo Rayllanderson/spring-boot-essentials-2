@@ -1,6 +1,7 @@
 package com.rayllanderson.springboot2.repositories;
 
 import com.rayllanderson.springboot2.domain.Anime;
+import com.rayllanderson.springboot2.utils.AnimeCreator;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ class AnimeRepositoryTest {
 
     @Test
     void save_PersistAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = animeRepository.save(animeToBeSaved);
 
         Assertions.assertThat(animeSaved).isNotNull();
@@ -32,7 +33,7 @@ class AnimeRepositoryTest {
 
     @Test
     void save_UpdatesAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = animeRepository.save(animeToBeSaved);
 
         Assertions.assertThat(animeSaved).isNotNull();
@@ -49,7 +50,7 @@ class AnimeRepositoryTest {
 
     @Test
     void delete_RemovesAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = animeRepository.save(animeToBeSaved);
 
         animeRepository.delete(animeSaved);
@@ -63,7 +64,7 @@ class AnimeRepositoryTest {
 
     @Test
     void findByName_ReturnsListOfAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = animeRepository.save(animeToBeSaved);
 
         String name = animeSaved.getName();
@@ -77,7 +78,7 @@ class AnimeRepositoryTest {
 
     @Test
     void findByName_ReturnsEmptyListOfAnime_WhenAnimeNotFound(){
-        Anime animeToBeSaved = createAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnimeToBeSaved();
         Anime animeSaved = animeRepository.save(animeToBeSaved);
 
         List<Anime> animes = this.animeRepository.findByNameIgnoreCaseContaining("this name not exists on database xalalalala");
@@ -87,7 +88,10 @@ class AnimeRepositoryTest {
 
     }
 
-    private Anime createAnime(){
-        return Anime.builder().name("One piece").build();
+    @Test
+    void save_ThrowsConstraintViolationException_WhenNameIsEmpty(){
+        Anime anime = new Anime();
+        animeRepository.save(anime);
+//        Assertions.assertThatThrownBy(() -> animeRepository.save(anime)).isInstanceOf(ConstraintViolationException.class);
     }
 }
