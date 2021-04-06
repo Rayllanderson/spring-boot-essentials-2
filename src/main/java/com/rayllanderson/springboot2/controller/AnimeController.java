@@ -6,11 +6,11 @@ import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
 import com.rayllanderson.springboot2.services.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +25,7 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @GetMapping
-    public ResponseEntity<Page<Anime>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<Anime>> findAll(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(animeService.findAll(pageable));
     }
 
