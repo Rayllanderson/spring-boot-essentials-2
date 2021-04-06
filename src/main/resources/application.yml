@@ -20,3 +20,12 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+info:
+  app: Spring Boot Essentials
+  github: https://github.com/Rayllanderson
