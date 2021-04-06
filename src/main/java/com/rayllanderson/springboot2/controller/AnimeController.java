@@ -4,6 +4,9 @@ import com.rayllanderson.springboot2.domain.Anime;
 import com.rayllanderson.springboot2.requests.AnimePostRequestBody;
 import com.rayllanderson.springboot2.requests.AnimePutRequestBody;
 import com.rayllanderson.springboot2.services.AnimeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springdoc.api.annotations.ParameterObject;
@@ -25,6 +28,8 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @GetMapping
+    @Operation(summary = "List all animes paginated", description = "The default size is 5. Use the parameter size to change the " +
+            "default value", tags = {"anime"})
     public ResponseEntity<Page<Anime>> findAll(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(animeService.findAll(pageable));
     }
@@ -50,6 +55,10 @@ public class AnimeController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "When successful operation"),
+            @ApiResponse(responseCode = "404", description = "When Anime Does Not exist in the Database")
+    })
     public ResponseEntity<Void> delete(@PathVariable long id) {
         animeService.deleteById(id);
         return ResponseEntity.noContent().build();
