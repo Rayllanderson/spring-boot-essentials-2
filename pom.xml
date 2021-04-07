@@ -10,11 +10,17 @@
     </parent>
     <groupId>com.rayllanderson</groupId>
     <artifactId>springboot-essentials2</artifactId>
+    <version>2.4.3</version>
     <name>springboot-essentials2</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
         <springdoc-openapi-ui.version>1.5.6</springdoc-openapi-ui.version>
+        <jib-maven-plugin.version>2.8.0</jib-maven-plugin.version>
+        <docker.distroless.image>gcr.io/distroless/java:11</docker.distroless.image>
+        <docker.repo.url>rayllanderson</docker.repo.url>
+        <docker.repo.project>springboot2-essentials</docker.repo.project>
+        <docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
     </properties>
     <dependencies>
         <dependency>
@@ -122,6 +128,29 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>${docker.distroless.image}</image>
+                    </from>
+                    <to>
+                        <image>${docker.image.name}</image>
+                        <tags>
+                            <tag>
+                                ${project.version}
+                            </tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <mainClass>
+                            com.rayllanderson.springboot2.SpringbootEssentials2Application
+                        </mainClass>
+                    </container>
                 </configuration>
             </plugin>
         </plugins>
